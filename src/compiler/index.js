@@ -184,7 +184,7 @@ const creteRenderer = (option) => {
      */
     const mountElement = (vnode, container) => {
         const el = vnode.el = createElement(vnode.type);
-        hasOwn(vnode, 'children') && (() => {
+        notEmpty(vnode.children) && (() => {
             if (Array.isArray(vnode.children)) {
                 vnode.children.forEach(child => {
                     patch(null, child, el);
@@ -193,7 +193,7 @@ const creteRenderer = (option) => {
                 setElementText(el, vnode.children);
             }
         })();
-        hasOwn(vnode, 'props') && (() => {
+        notEmpty(vnode.props) && (() => {
             for (const key in vnode.props) {
                 patchProps(el, key, null, vnode.props[key]);
             }
