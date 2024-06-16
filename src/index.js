@@ -22,7 +22,10 @@ const { render } = createRenderer({
         selfSetAttribute(el, key, prevValue, nextValue)
     },
 });
-const root = document.getElementById('root');
+/**
+ * @description 根节点
+ */
+const ROOT = document.getElementById('root');
 
 const count = ref(0);
 
@@ -41,23 +44,23 @@ const list = ref([
     { id: 4, name: 'qux' },
 ]);
 
-const someVnode = computed(() => {
-    return {
-        type: 'ul',
-
-        children: list.value.map(item => ({
-            type: 'li',
-            props: {
-                style: resolveStyle('margin-top: 10px;'),
-            },
-            children: item.name,
-        })),
-    }
-})
+const someVnode = computed(() => ({
+    type: 'ul',
+    key: 'the-ul',
+    children: list.value.map(item => ({
+        type: 'li',
+        key: item.id,
+        props: {
+            style: resolveStyle('color: red;'),
+        },
+        children: item.name,
+    })),
+}))
 
 effect(() => {
     const vnode = {
         type: 'div',
+        key: 'the-div',
         props: {
             style: resolveStyle('font-size: 16px;cursor: pointer;'),
             class: resolveClass({
@@ -68,6 +71,7 @@ effect(() => {
         children: [
             {
                 type: 'div',
+                key: 'the-div-child-1',
                 props: {
                     style: resolveStyle('color: red;margin: 12px 0 12px 12px;height: 24px;'),
                     class: resolveClass({
@@ -89,6 +93,7 @@ effect(() => {
             },
             {
                 type: 'button',
+                key: 'the-button-minus',
                 props: {
                     style: resolveStyle({
                         marginLeft: '12px',
@@ -101,30 +106,36 @@ effect(() => {
             },
             {
                 type: Comment,
+                key: 'the-comment',
                 children: '注释',
             },
             {
                 type: Fragment,
+                key: 'the-fragment',
                 children: [
                     {
                         type: Text,
+                        key: 'the-text-1',
                         children: '文本节点1',
                     },
                     {
                         type: Text,
+                        key: 'the-text-2',
                         children: '文本节点2',
                     },
                 ],
             },
             {
                 type: MyComponent,
+                key: 'the-my-component',
             },
             someVnode.value,
             {
                 type: 'button',
+                key: 'the-button-reverse',
                 props: {
                     onClick: () => {
-                        list.value = list.value.reverse();
+                        list.value = [...list.value].reverse();
                     },
                 },
                 children: 'reverse list',
@@ -132,8 +143,5 @@ effect(() => {
         ],
     }
 
-    render(vnode, root);
+    render(vnode, ROOT);
 })
-
-
-
