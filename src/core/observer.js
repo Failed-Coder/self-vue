@@ -392,7 +392,6 @@ const cleanUp = (effect) => {
  * * 即我们即读取了 count 的值，又设置了 count 的值
  * * 我们读取了 count 的值, 触发了 track, 然后我们 +1 又赋值给 count, 触发了 trigger, 但此时 activeEffect 仍未执行完毕, 就要重新执行了
  * * 但是我们的 track 和 trigger 是执行的同一个 activeEffect
- * todo 我们需要一个机制来防止这种情况的发生 -> 也就是 守卫条件 参考 track 函数新增的代码
  */
 
 /**
@@ -499,8 +498,8 @@ export default function createReactive(obj, isShallow = false, isReadonly = fals
 
         // 拦截 ownKeys 操作即可间接拦截 for...in 循环
         /**
-         * 我们在使用 track 函数进行追踪的
-         * 时候，将 ITERATE_KEY 作为追踪的 key，为什么这么做呢？这是因
+         * 我们在使用 track 函数进行追踪的时候，
+         * 将 ITERATE_KEY 作为追踪的 key，为什么这么做呢？这是因
          * 为 ownKeys 拦截函数与 get/set 拦截函数不同，在 set/get 中，我
          * 们可以得到具体操作的 key，但是在 ownKeys 中，我们只能拿到目标
          * 对象 target，而无法得知具体的 key，所以我们需要一个特殊的 key。

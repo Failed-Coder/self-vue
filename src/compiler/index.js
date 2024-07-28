@@ -303,6 +303,7 @@ const createRenderer = (option) => {
         //     }
         // }
 
+        //! 优化后的简单 diff 算法
         const oldChildren = ov.children;
         const newChildren = nv.children;
 
@@ -368,6 +369,8 @@ const createRenderer = (option) => {
             const has = newChildren.find(newVnode => newVnode.key === oldVnode.key);
             !has && unmount(oldVnode);
         }
+
+        //! 双端 diff 算法
     };
 
     /**

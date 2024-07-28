@@ -18,9 +18,7 @@ const { render } = createRenderer({
     setElementText: (el, text) => {
         el.textContent = text;
     },
-    patchProps: (el, key, prevValue, nextValue) => {
-        selfSetAttribute(el, key, prevValue, nextValue)
-    },
+    patchProps: selfSetAttribute,
 });
 /**
  * @description 根节点
@@ -33,6 +31,9 @@ const MyComponent = () => ({
     type: 'div',
     props: {
         style: resolveStyle('margin-left: 20px;font-size: 16px;cursor: pointer;'),
+        onClick: () => {
+            confirm('click me - function component');
+        },
     },
     children: 'click me - function component'
 })
@@ -88,6 +89,7 @@ effect(() => {
                     onClick: () => {
                         count.value++;
                     },
+                    type: 'button',
                 },
                 children: 'add',
             },
@@ -101,6 +103,7 @@ effect(() => {
                     onClick: () => {
                         count.value--;
                     },
+                    type: 'button',
                 },
                 children: 'minus',
             },
@@ -137,6 +140,7 @@ effect(() => {
                     onClick: () => {
                         list.value = [...list.value].reverse();
                     },
+                    type: 'button',
                 },
                 children: 'reverse list',
             }
